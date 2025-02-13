@@ -1,0 +1,42 @@
+#ifndef MDGE_WIN32_CURSOR_H
+#define MDGE_WIN32_CURSOR_H
+
+#define NOMINMAN
+#include <Windows.h>
+
+namespace mdge {
+enum class Cursor {
+	ARROW,
+	TEXT_SELECT,
+	WAIT,
+	CROSS,
+	UP,
+	DIAGONAL,
+	COUNTER_DIAGONAL,
+	HORIZONTAL,
+	VERTICAL,
+	ARROW_CROSS,
+	NO,
+	HAND,
+	ARROW_WAIT,
+	HAND_PIN,
+	HAND_PERSON,
+	PEN,
+	THICK_VERTICAL,
+	THICK_HORIZONTAL,
+	THICK_ARROW_CROSS,
+	THICK_UP,
+	THICK_DOWN,
+	THICK_LEFT,
+	THICK_RIGHT,
+	THICK_UP_LEFT,
+	THICK_UP_RIGHT,
+	THICK_DOWN_LEFT,
+	THICK_DOWN_RIGHT,
+	ARROW_CD
+};
+
+HCURSOR GetDefaultCursor(Cursor cursor);
+}// namespace mdge
+
+#endif

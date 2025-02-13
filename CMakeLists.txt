@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-set(ProjectName "VK_Template")
+set(ProjectName "MDGE")
 
 project("${ProjectName}" VERSION 0.1)
 set(CMAKE_CXX_STANDARD 20)
@@ -28,22 +28,24 @@ add_custom_target(q_start_clock ALL
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/console_clock/bin"
 )
 
-#app executable
-add_executable("${ProjectName}"
-        #src files
-        src/main.cpp
-        
-        #header files
-        include/main_header.hpp
+add_library("${ProjectName}" STATIC
+    #src files
+    src/windows/win32_window.cpp
+    src/windows/win32_cursor.cpp
+    #header files
+    include/windows/win32_window.hpp
+    include/windows/win32_cursor.hpp
 )
 
 add_dependencies("${ProjectName}" compile_shaders q_start_clock)
 
 target_include_directories("${ProjectName}" PUBLIC 
-    "${CMAKE_SOURCE_DIR}/dependencies/glm" 
-    "C:/VulkanSDK/1.3.296.0/Include"
+    "${CMAKE_SOURCE_DIR}/dependencies" 
+    "$ENV{VULKAN_SDK}/Include"
 )
 
 target_link_libraries("${ProjectName}" PUBLIC 
     "$ENV{VULKAN_SDK}/Lib/vulkan-1.lib"
 )
+
+add_subdirectory(tests)
