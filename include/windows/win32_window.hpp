@@ -1,7 +1,6 @@
 #ifndef MDGE_WIN32_WINDOW_H
 #define MDGE_WIN32_WINDOW_H
 
-#define NOMINMAN
 #include <MidnightMath/include/md_math.hpp>
 #include <Windows.h>
 #include <stdexcept>
@@ -40,36 +39,50 @@ class win32_window {
 public:
 	struct win32_window_createInfo {
 		mdm::uvec2_s size = {800, 800};
+		mdm::ivec2_s position = {CW_USEDEFAULT, CW_USEDEFAULT};
 		std::string name = "Window";
 		DWORD style = WS_OVERLAPPEDWINDOW;
 		mdm::rgb_24 color = {255, 255, 255};
+		HICON icon = nullptr;
+		WNDPROC fpWindowProcess = nullptr;
 	};
 
 	win32_window() {}
 	win32_window(const win32_window_createInfo &createInfo) { Create(createInfo); }
 	~win32_window() {}
 
-	void Create(const win32_window_createInfo &createInfo);
-	void Update();
-	void WaitUpdate();
-	void Destroy();
+	virtual void Create(const win32_window_createInfo &createInfo);
+	virtual void Destroy();
+
 	LRESULT Process(UINT message, WPARAM wParam, LPARAM lParam);
 
-	bool IsOpen() const { return IsWindow(m_window); }
 	HWND GetNativeWindowHandle() const { return m_window; }
 
-	mdm::uvec2_s GetSize();
-	void SetSize(const mdm::uvec2_s &position);
+	void Update() const;
+	void WaitUpdate() const;
 
-	mdm::uvec2_s GetPosition();
-	void SetPosition(const mdm::uvec2_s position);
+	bool IsOpen() const { return IsWindow(m_window); }
 
-	void SetVisible(bool visible);
+	mdm::uvec2_s GetSize() const;
+	virtual void SetSize(const mdm::uvec2_s &position) const;
+
+	mdm::uvec2_s GetPosition() const;
+	void SetPosition(const mdm::uvec2_s position) const;
+
+	void SetVisible(bool visible) const;
 
 	void SetCursorVisible(bool visible);
 	void SetWindowCursor(Cursor cursor);
 
-private:
+	void SetTitle(const std::string &title) const;
+
+	void RequestFocus() const { SetFocus(m_window); }
+	bool HasFocus() const;
+	bool IsMinimized() const { return IsIconic(m_window); }
+
+	bool Flash() const;
+
+protected:
 	mdm::uvec2_s GetWindowAdjustedSize(const mdm::uvec2_s &size, DWORD style);
 
 	HWND m_window = nullptr;

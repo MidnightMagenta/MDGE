@@ -1,94 +1,93 @@
 #include "../include/windows/win32_cursor.hpp"
 
 HCURSOR mdge::GetDefaultCursor(Cursor cursor) {
-	LPCSTR cursorName;
 	switch (cursor) {
 		case mdge::Cursor::ARROW:
-			cursorName = IDC_ARROW;
+			return LoadCursorA(0, IDC_ARROW);
 			break;
 		case mdge::Cursor::TEXT_SELECT:
-			cursorName = IDC_IBEAM;
+			return LoadCursorA(0, IDC_IBEAM);
 			break;
 		case mdge::Cursor::WAIT:
-			cursorName = IDC_WAIT;
+			return LoadCursorA(0, IDC_WAIT);
 			break;
 		case mdge::Cursor::CROSS:
-			cursorName = IDC_CROSS;
+			return LoadCursorA(0, IDC_CROSS);
 			break;
 		case mdge::Cursor::UP:
-			cursorName = IDC_UPARROW;
+			return LoadCursorA(0, IDC_UPARROW);
 			break;
 		case mdge::Cursor::DIAGONAL:
-			cursorName = IDC_SIZENWSE;
+			return LoadCursorA(0, IDC_SIZENWSE);
 			break;
 		case mdge::Cursor::COUNTER_DIAGONAL:
-			cursorName = IDC_SIZENESW;
+			return LoadCursorA(0, IDC_SIZENESW);
 			break;
 		case mdge::Cursor::HORIZONTAL:
-			cursorName = IDC_SIZEWE;
+			return LoadCursorA(0, IDC_SIZEWE);
 			break;
 		case mdge::Cursor::VERTICAL:
-			cursorName = IDC_SIZENS;
+			return LoadCursorA(0, IDC_SIZENS);
 			break;
 		case mdge::Cursor::ARROW_CROSS:
-			cursorName = IDC_SIZEALL;
+			return LoadCursorA(0, IDC_SIZEALL);
 			break;
 		case mdge::Cursor::NO:
-			cursorName = IDC_NO;
+			return LoadCursorA(0, IDC_NO);
 			break;
 		case mdge::Cursor::HAND:
-			cursorName = IDC_HAND;
+			return LoadCursorA(0, IDC_HAND);
 			break;
 		case mdge::Cursor::ARROW_WAIT:
-			cursorName = IDC_APPSTARTING;
+			return LoadCursorA(0, IDC_APPSTARTING);
 			break;
 		case mdge::Cursor::HAND_PIN:
-			cursorName = IDC_PIN;
+			return LoadCursorA(0, IDC_PIN);
 			break;
 		case mdge::Cursor::HAND_PERSON:
-			cursorName = IDC_PERSON;
+			return LoadCursorA(0, IDC_PERSON);
 			break;
 		case mdge::Cursor::PEN:
-			cursorName = MAKEINTRESOURCE(32631);
+			return LoadCursorA(0, MAKEINTRESOURCE(32631));
 			break;
 		case mdge::Cursor::THICK_VERTICAL:
-			cursorName = MAKEINTRESOURCE(32652);
+			return LoadCursorA(0, MAKEINTRESOURCE(32652));
 			break;
 		case mdge::Cursor::THICK_HORIZONTAL:
-			cursorName = MAKEINTRESOURCE(32653);
+			return LoadCursorA(0, MAKEINTRESOURCE(32653));
 			break;
 		case mdge::Cursor::THICK_ARROW_CROSS:
-			cursorName = MAKEINTRESOURCE(32654);
+			return LoadCursorA(0, MAKEINTRESOURCE(32654));
 			break;
 		case mdge::Cursor::THICK_UP:
-			cursorName = MAKEINTRESOURCE(32655);
+			return LoadCursorA(0, MAKEINTRESOURCE(32655));
 			break;
 		case mdge::Cursor::THICK_DOWN:
-			cursorName = MAKEINTRESOURCE(32656);
+			return LoadCursorA(0, MAKEINTRESOURCE(32656));
 			break;
 		case mdge::Cursor::THICK_LEFT:
-			cursorName = MAKEINTRESOURCE(32657);
+			return LoadCursorA(0, MAKEINTRESOURCE(32657));
 			break;
 		case mdge::Cursor::THICK_RIGHT:
-			cursorName = MAKEINTRESOURCE(32658);
+			return LoadCursorA(0, MAKEINTRESOURCE(32658));
 			break;
 		case mdge::Cursor::THICK_UP_LEFT:
-			cursorName = MAKEINTRESOURCE(32659);
+			return LoadCursorA(0, MAKEINTRESOURCE(32659));
 			break;
 		case mdge::Cursor::THICK_UP_RIGHT:
-			cursorName = MAKEINTRESOURCE(32660);
+			return LoadCursorA(0, MAKEINTRESOURCE(32660));
 			break;
 		case mdge::Cursor::THICK_DOWN_LEFT:
-			cursorName = MAKEINTRESOURCE(32661);
+			return LoadCursorA(0, MAKEINTRESOURCE(32661));
 			break;
 		case mdge::Cursor::THICK_DOWN_RIGHT:
-			cursorName = MAKEINTRESOURCE(32662);
+			return LoadCursorA(0, MAKEINTRESOURCE(32662));
 			break;
 		case mdge::Cursor::ARROW_CD:
-			cursorName = MAKEINTRESOURCE(32663);
+			return LoadCursorA(0, MAKEINTRESOURCE(32663));
 			break;
 		default:
 			break;
 	}
-	return LoadCursorA(0, cursorName);
+	return nullptr;
 }

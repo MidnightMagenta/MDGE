@@ -3,6 +3,10 @@ cmake_minimum_required(VERSION 3.10)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(ProjectName "MDGE")
+set(Subsystem "MDGE_SUBSYSTEM_CONSOLE")
+set(VersionMajor 0)
+set(VersionMinor 1)
+set(VersionPatch 0)
 
 project("${ProjectName}" VERSION 0.1)
 set(CMAKE_CXX_STANDARD 20)
@@ -32,12 +36,34 @@ add_library("${ProjectName}" STATIC
     #src files
     src/windows/win32_window.cpp
     src/windows/win32_cursor.cpp
+
+    src/vulkan/vk_context.cpp
+    src/vulkan/vk_window.cpp
     #header files
     include/windows/win32_window.hpp
     include/windows/win32_cursor.hpp
+    include/windows/win32_console.hpp
+
+    include/vulkan/vk_context.hpp
+    include/vulkan/vk_window.hpp
 )
 
 add_dependencies("${ProjectName}" compile_shaders q_start_clock)
+
+target_compile_definitions("${ProjectName}" PUBLIC VERSION_MAJOR=${VersionMajor})
+target_compile_definitions("${ProjectName}" PUBLIC VERSION_MINOR=${VersionMinor})
+target_compile_definitions("${ProjectName}" PUBLIC VERSION_PATCH=${VersionPatch})
+
+target_compile_definitions("${ProjectName}" PUBLIC NOMINMAX)
+target_compile_definitions("${ProjectName}" PUBLIC VK_USE_PLATFORM_WIN32_KHR)
+
+if(Subsystem STREQUAL "MDGE_SUBSYSTEM_CONSOLE")
+    set_target_properties("${ProjectName}" PROPERTIES LINK_FLAGS /SUBSYSTEM:CONSOLE)
+    target_compile_definitions("${ProjectName}" PRIVATE MDGE_SUBSYSTEM_CONSOLE)
+elseif (Subsystem STREQUAL "MDGE_SUBSYSTEM_WINDOWS")
+    set_target_properties("${ProjectName}" PROPERTIES LINK_FLAGS /SUBSYSTEM:WINDOWS)
+    target_compile_definitions("${ProjectName}" PRIVATE MDGE_SUBSYSTEM_WINDOWS)
+endif ()
 
 target_include_directories("${ProjectName}" PUBLIC 
     "${CMAKE_SOURCE_DIR}/dependencies" 
@@ -46,6 +72,7 @@ target_include_directories("${ProjectName}" PUBLIC
 
 target_link_libraries("${ProjectName}" PUBLIC 
     "$ENV{VULKAN_SDK}/Lib/vulkan-1.lib"
+    "vma"
 )
 
 add_subdirectory(tests)

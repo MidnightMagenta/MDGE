@@ -21,11 +21,11 @@ void mdge::win32_window::Create(const win32_window_createInfo &createInfo) {
 	WNDCLASSEX windowClass{};
 	windowClass.cbSize = sizeof(WNDCLASSEX);
 	windowClass.style = CS_HREDRAW | CS_VREDRAW;
-	windowClass.lpfnWndProc = mdge::Process;
+	windowClass.lpfnWndProc = (createInfo.fpWindowProcess == nullptr) ? mdge::Process : createInfo.fpWindowProcess;
 	windowClass.cbClsExtra = 0;
 	windowClass.cbWndExtra = 0;
 	windowClass.hInstance = GetModuleHandleA(0);
-	windowClass.hIcon = nullptr;
+	windowClass.hIcon = createInfo.icon;
 	windowClass.hCursor = LoadCursorA(0, IDC_ARROW);
 	windowClass.hbrBackground = CreateSolidBrush(RGB(createInfo.color.r(), createInfo.color.g(), createInfo.color.b()));
 	windowClass.lpszMenuName = nullptr;
@@ -36,13 +36,13 @@ void mdge::win32_window::Create(const win32_window_createInfo &createInfo) {
 
 	mdm::uvec2_s size = GetWindowAdjustedSize(createInfo.size, createInfo.style);
 
-	m_window = CreateWindowEx(0, className.c_str(), createInfo.name.c_str(), createInfo.style, CW_USEDEFAULT,
-							  CW_USEDEFAULT, size.w(), size.h(), 0, 0, GetModuleHandleA(0), this);
+	m_window = CreateWindowEx(0, className.c_str(), createInfo.name.c_str(), createInfo.style, createInfo.position.x(),
+							  createInfo.position.y(), size.w(), size.h(), 0, 0, GetModuleHandleA(0), this);
 	if (!m_window) { throw std::runtime_error("Failed to create window"); }
 	ShowWindow(m_window, SW_SHOW);
 }
 
-void mdge::win32_window::Update() {
+void mdge::win32_window::Update() const {
 	MSG msg = {};
 	while (PeekMessage(&msg, m_window, 0, 0, PM_REMOVE)) {
 		TranslateMessage(&msg);
@@ -50,7 +50,7 @@ void mdge::win32_window::Update() {
 	}
 }
 
-void mdge::win32_window::WaitUpdate() {
+void mdge::win32_window::WaitUpdate() const {
 	MSG msg = {};
 	if (GetMessage(&msg, m_window, 0, 0)) {
 		TranslateMessage(&msg);
@@ -64,7 +64,7 @@ LRESULT mdge::win32_window::Process(UINT message, WPARAM wParam, LPARAM lParam) 
 	return DefWindowProc(m_window, message, wParam, lParam);
 }
 
-mdm::uvec2_s mdge::win32_window::GetSize() {
+mdm::uvec2_s mdge::win32_window::GetSize() const {
 	RECT windowSize;
 	if (GetWindowRect(m_window, &windowSize)) {
 		return {unsigned int(windowSize.right - windowSize.left), unsigned int(windowSize.bottom - windowSize.top)};
@@ -72,21 +72,21 @@ mdm::uvec2_s mdge::win32_window::GetSize() {
 	return {0, 0};
 }
 
-void mdge::win32_window::SetSize(const mdm::uvec2_s &size) {
+void mdge::win32_window::SetSize(const mdm::uvec2_s &size) const {
 	SetWindowPos(m_window, HWND_TOP, 0, 0, size.w(), size.h(), SWP_NOMOVE | SWP_NOREPOSITION | SWP_NOACTIVATE);
 }
 
-mdm::uvec2_s mdge::win32_window::GetPosition() {
+mdm::uvec2_s mdge::win32_window::GetPosition() const {
 	RECT rect{};
 	if (GetWindowRect(m_window, &rect)) { return {unsigned int(rect.left), unsigned int(rect.top)}; }
 	return {0, 0};
 }
 
-void mdge::win32_window::SetPosition(const mdm::uvec2_s position) {
+void mdge::win32_window::SetPosition(const mdm::uvec2_s position) const {
 	SetWindowPos(m_window, HWND_TOP, position.x(), position.y(), 0, 0, SWP_NOSIZE | SWP_NOREPOSITION | SWP_NOACTIVATE);
 }
 
-void mdge::win32_window::SetVisible(bool visible) {
+void mdge::win32_window::SetVisible(bool visible) const {
 	if (visible) {
 		ShowWindow(m_window, SW_SHOW);
 	} else {
@@ -97,6 +97,24 @@ void mdge::win32_window::SetVisible(bool visible) {
 void mdge::win32_window::SetCursorVisible(bool visible) { ShowCursor(visible); }
 
 void mdge::win32_window::SetWindowCursor(Cursor cursor) { SetCursor(mdge::GetDefaultCursor(cursor)); }
+
+void mdge::win32_window::SetTitle(const std::string &title) const { SetWindowTextA(m_window, title.c_str()); }
+
+bool mdge::win32_window::HasFocus() const {
+	if (GetFocus() == m_window) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool mdge::win32_window::Flash() const { 
+	FLASHWINFO flashInfo{};
+	flashInfo.cbSize = sizeof(FLASHWINFO);
+	flashInfo.hwnd = m_window;
+	flashInfo.dwFlags = FLASHW_TRAY | FLASHW_TIMERNOFG;
+	return FlashWindowEx(&flashInfo);
+}
 
 mdm::uvec2_s mdge::win32_window::GetWindowAdjustedSize(const mdm::uvec2_s &size, DWORD style) {
 	RECT rect{};
