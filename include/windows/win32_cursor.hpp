@@ -1,6 +1,7 @@
 #ifndef MDGE_WIN32_CURSOR_H
 #define MDGE_WIN32_CURSOR_H
 
+#define NOMINMAX
 #include <Windows.h>
 
 namespace mdge {

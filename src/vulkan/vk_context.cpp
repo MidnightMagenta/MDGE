@@ -25,13 +25,13 @@ mdge::vk::Context::~Context() {
 	}
 }
 
-void mdge::vk::Context::Create(const CreateInfo *pCreateInfo) {
+void mdge::vk::Context::Create(const s_createInfo *pCreateInfo) {
 	CreateInstance(pCreateInfo);
 	CreateSurface(pCreateInfo);
 	CreateDevice(pCreateInfo);
 }
 
-void mdge::vk::Context::CreateInstance(const CreateInfo *pCreateInfo) {
+void mdge::vk::Context::CreateInstance(const s_createInfo *pCreateInfo) {
 	VkApplicationInfo appInfo{};
 	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	appInfo.apiVersion = pCreateInfo->vkApiVersion;
@@ -81,7 +81,7 @@ void mdge::vk::Context::CreateInstance(const CreateInfo *pCreateInfo) {
 #endif// _DEBUG
 }
 
-void mdge::vk::Context::CreateSurface(const CreateInfo *pCreateInfo) {
+void mdge::vk::Context::CreateSurface(const s_createInfo *pCreateInfo) {
 	if (!pCreateInfo->pWindow) { throw std::runtime_error("Failed to create window surface. Window is nullptr"); }
 	VkWin32SurfaceCreateInfoKHR createInfo{};
 	createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
@@ -91,9 +91,9 @@ void mdge::vk::Context::CreateSurface(const CreateInfo *pCreateInfo) {
 	if (result != VK_SUCCESS) { throw std::runtime_error("Failed to create window surface with: " + result); }
 }
 
-void mdge::vk::Context::PickPhysicalDevice(const CreateInfo *pCreateInfo) {}
+void mdge::vk::Context::PickPhysicalDevice(const s_createInfo *pCreateInfo) {}
 
-void mdge::vk::Context::CreateDevice(const CreateInfo *pCreateInfo) {}
+void mdge::vk::Context::CreateDevice(const s_createInfo *pCreateInfo) {}
 
 bool mdge::vk::Context::CheckLayerSupport(const std::vector<const char *> layerNames) {
 	uint32_t layerCount;

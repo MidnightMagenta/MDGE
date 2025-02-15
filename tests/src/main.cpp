@@ -1,6 +1,7 @@
 #include <iostream>
 #include <../include/vulkan/vk_context.hpp>
 #include <windows/win32_window.hpp>
+#include <limits>
 
 int main() { 
 	mdge::win32_window window;
@@ -11,7 +12,7 @@ int main() {
 	createInfo.color = {255, 255, 255};
 	window.Create(createInfo);
 
-	mdge::vk::Context::CreateInfo contextInfo{};
+	mdge::vk::Context::s_createInfo contextInfo{};
 	contextInfo.pWindow = &window;
 	mdge::vk::Context context;
 	context.Create(&contextInfo);

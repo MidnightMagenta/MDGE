@@ -1,6 +1,7 @@
 #ifndef WIN32_CONSOLE_H
 #define WIN32_CONSOLE_H
 
+#define NOMINMAX
 #include <Windows.h>
 
 #define CONSOLE_RED 12

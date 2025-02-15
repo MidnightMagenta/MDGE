@@ -24,6 +24,7 @@
 #define AMD_VULKAN_MEMORY_ALLOCATOR_H
 
 #define VK_USE_PLATFORM_WIN32_KHR
+#define NOMINMAX
 
 /** \mainpage Vulkan Memory Allocator
 

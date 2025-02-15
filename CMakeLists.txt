@@ -54,9 +54,6 @@ target_compile_definitions("${ProjectName}" PUBLIC VERSION_MAJOR=${VersionMajor}
 target_compile_definitions("${ProjectName}" PUBLIC VERSION_MINOR=${VersionMinor})
 target_compile_definitions("${ProjectName}" PUBLIC VERSION_PATCH=${VersionPatch})
 
-target_compile_definitions("${ProjectName}" PUBLIC NOMINMAX)
-target_compile_definitions("${ProjectName}" PUBLIC VK_USE_PLATFORM_WIN32_KHR)
-
 if(Subsystem STREQUAL "MDGE_SUBSYSTEM_CONSOLE")
     set_target_properties("${ProjectName}" PROPERTIES LINK_FLAGS /SUBSYSTEM:CONSOLE)
     target_compile_definitions("${ProjectName}" PRIVATE MDGE_SUBSYSTEM_CONSOLE)

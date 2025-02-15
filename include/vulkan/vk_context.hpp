@@ -5,6 +5,8 @@
 #include <iostream>
 #endif
 
+#define VK_USE_PLATFORM_WIN32_KHR
+
 #include "../include/windows/win32_console.hpp"
 #include "../include/windows/win32_window.hpp"
 #include <initializer_list>
@@ -16,7 +18,7 @@
 namespace mdge::vk {
 class Context {
 public:
-	struct CreateInfo {
+	struct s_createInfo {
 		std::string applicationName = "Application";
 		uint32_t applicationVersion = VK_MAKE_VERSION(0, 1, 0);
 		uint32_t vkApiVersion = VK_API_VERSION_1_3;
@@ -26,16 +28,16 @@ public:
 	};
 
 	Context() {}
-	Context(const CreateInfo *pCreateInfo) { Create(pCreateInfo); }
+	Context(const s_createInfo *pCreateInfo) { Create(pCreateInfo); }
 	~Context();
 
-	void Create(const CreateInfo *pCreateInfo);
+	void Create(const s_createInfo *pCreateInfo);
 
 private:
-	void CreateInstance(const CreateInfo *pCreateInfo);
-	void CreateSurface(const CreateInfo *pCreateInfo);
-	void PickPhysicalDevice(const CreateInfo *pCreateInfo);
-	void CreateDevice(const CreateInfo *pCreateInfo);
+	void CreateInstance(const s_createInfo *pCreateInfo);
+	void CreateSurface(const s_createInfo *pCreateInfo);
+	void PickPhysicalDevice(const s_createInfo *pCreateInfo);
+	void CreateDevice(const s_createInfo *pCreateInfo);
 
 	static bool CheckLayerSupport(const std::vector<const char *> layerNames);
 
@@ -51,7 +53,8 @@ private:
 	VkSampleCountFlagBits m_msaaSampleCount = VK_SAMPLE_COUNT_1_BIT;
 
 #ifdef _DEBUG
-	VkDebugUtilsMessengerEXT m_debugMessenger;
+	VkDebugUtilsMessengerEXT m_debugMessenger = VK_NULL_HANDLE;
+
 	static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
 														VkDebugUtilsMessageTypeFlagsEXT messageType,
 														const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,

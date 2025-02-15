@@ -1,6 +1,8 @@
 #ifndef MDGE_WIN32_WINDOW_H
 #define MDGE_WIN32_WINDOW_H
 
+#define NOMINMAX
+
 #include <MidnightMath/include/md_math.hpp>
 #include <Windows.h>
 #include <stdexcept>
