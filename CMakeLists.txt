@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.10)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "cmake")
 
 set(ProjectName "MDGE")
 set(Subsystem "MDGE_SUBSYSTEM_CONSOLE")
+set(GraphicsAPI "OpenGL")
 set(VersionMajor 0)
 set(VersionMinor 1)
 set(VersionPatch 0)
@@ -24,8 +26,16 @@ add_custom_target(compile_shaders ALL
     COMMENT "Compiling shaders"
     COMMAND "${PROJECT_SOURCE_DIR}/shaders/compile.bat"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/shaders"
+)
 
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shaders/shader_bin ${CMAKE_BINARY_DIR}/shaders
+if(GraphicsAPI STREQUAL "Vulkan")
+    set(ShaderDirectory ${PROJECT_SOURCE_DIR}/shaders/shader_bin)
+elseif(GraphicsAPI STREQUAL "OpenGL")
+    set(ShaderDirectory ${PROJECT_SOURCE_DIR}/shaders/gl_shaders)
+endif()
+
+add_custom_target(copy_shaders ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${ShaderDirectory} ${CMAKE_BINARY_DIR}/resources/shaders
 )
 
 add_custom_target(q_start_clock ALL
@@ -39,22 +49,32 @@ add_library("${ProjectName}" STATIC
     src/windows/win32_window.cpp
     src/windows/win32_cursor.cpp
 
-    src/OpenGL/OpenGL_window.cpp
-
     src/vulkan/vk_context.cpp
     src/vulkan/vk_window.cpp
+
+    src/OpenGL/gl_window.cpp
+    src/OpenGL/gl_program.cpp
+
+    src/file.cpp
     #header files
     include/windows/win32_window.hpp
     include/windows/win32_cursor.hpp
     include/windows/win32_console.hpp
 
-    include/OpenGL/OpenGL_window.hpp
-
     include/vulkan/vk_context.hpp
     include/vulkan/vk_window.hpp
+
+    include/OpenGL/gl_window.hpp
+    include/OpenGL/gl_program.hpp
+
+    include/file.hpp
 )
 
-add_dependencies("${ProjectName}" compile_shaders q_start_clock)
+if(GraphicsAPI STREQUAL "Vulkan")
+    add_dependencies("${ProjectName}" compile_shaders)
+endif()
+
+add_dependencies("${ProjectName}" copy_shaders q_start_clock)
 
 target_compile_definitions("${ProjectName}" PUBLIC VERSION_MAJOR=${VersionMajor})
 target_compile_definitions("${ProjectName}" PUBLIC VERSION_MINOR=${VersionMinor})
@@ -79,7 +99,7 @@ target_link_libraries("${ProjectName}" PUBLIC
     "$ENV{VULKAN_SDK}/Lib/vulkan-1.lib"
     "vma"
     OpenGL::GL
-    GL_Deps
+    GL_Dependencies
 )
 
 add_subdirectory(tests)

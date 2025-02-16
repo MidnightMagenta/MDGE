@@ -1,4 +1,4 @@
-#include "../include/OpenGL/OpenGL_window.hpp"
+#include "../include/OpenGL/gl_window.hpp"
 
 LRESULT CALLBACK DummyProcess(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	return DefWindowProc(hWnd, message, wParam, lParam);

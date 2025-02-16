@@ -1,6 +1,7 @@
+#include <OpenGL/gl_program.hpp>
+#include <OpenGL/gl_window.hpp>
 #include <iostream>
 #include <limits>
-#include <OpenGL/OpenGL_window.hpp>
 
 int run() {
 	mdge::gl::OpenGL_Window window;
@@ -12,6 +13,16 @@ int run() {
 	window.Create(&createInfo);
 	window.MakeCurrent();
 
+	mdge::gl::Shader testShader;
+	testShader.Create("../resources/shaders/sample_shader.frag", GL_FRAGMENT_SHADER);
+
+	mdge::gl::Program::CreateInfo programCreateInfo{};
+	programCreateInfo.shaderInfos = {{"../resources/shaders/sample_shader.frag", GL_FRAGMENT_SHADER},
+									 {"../resources/shaders/sample_shader.vert", GL_VERTEX_SHADER}};
+
+	mdge::gl::Program program;
+	program.Create(&programCreateInfo);
+
 	while (window.IsOpen()) { window.Update(); }
 	return 0;
 }
@@ -20,7 +31,7 @@ int main() {
 	try {
 		return run();
 	} catch (const std::exception &e) {
-		MessageBox(nullptr, e.what(), "Error", MB_ICONERROR | MB_OK);
+		std::cerr << e.what() << "\n";
 		return -1;
 	}
 }
