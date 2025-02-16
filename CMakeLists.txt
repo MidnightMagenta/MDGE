@@ -12,6 +12,8 @@ project("${ProjectName}" VERSION 0.1)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
+find_package(OpenGL REQUIRED)
+
 if (NOT DEFINED ENV{VULKAN_SDK})
     message(FATAL_ERROR "VULKAN_SDK is not set.")
 endif()
@@ -37,12 +39,16 @@ add_library("${ProjectName}" STATIC
     src/windows/win32_window.cpp
     src/windows/win32_cursor.cpp
 
+    src/OpenGL/OpenGL_window.cpp
+
     src/vulkan/vk_context.cpp
     src/vulkan/vk_window.cpp
     #header files
     include/windows/win32_window.hpp
     include/windows/win32_cursor.hpp
     include/windows/win32_console.hpp
+
+    include/OpenGL/OpenGL_window.hpp
 
     include/vulkan/vk_context.hpp
     include/vulkan/vk_window.hpp
@@ -62,6 +68,8 @@ elseif (Subsystem STREQUAL "MDGE_SUBSYSTEM_WINDOWS")
     target_compile_definitions("${ProjectName}" PRIVATE MDGE_SUBSYSTEM_WINDOWS)
 endif ()
 
+add_subdirectory("${CMAKE_SOURCE_DIR}/dependencies/OpenGL")
+
 target_include_directories("${ProjectName}" PUBLIC 
     "${CMAKE_SOURCE_DIR}/dependencies" 
     "$ENV{VULKAN_SDK}/Include"
@@ -70,6 +78,8 @@ target_include_directories("${ProjectName}" PUBLIC
 target_link_libraries("${ProjectName}" PUBLIC 
     "$ENV{VULKAN_SDK}/Lib/vulkan-1.lib"
     "vma"
+    OpenGL::GL
+    GL_Deps
 )
 
 add_subdirectory(tests)

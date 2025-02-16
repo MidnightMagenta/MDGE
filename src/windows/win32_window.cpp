@@ -17,7 +17,7 @@ LRESULT mdge::Process(HWND hWind, UINT message, WPARAM wParam, LPARAM lParam) {
 	}
 }
 
-void mdge::win32_window::Create(const win32_window_createInfo &createInfo) {
+void mdge::win32_window::Create(const CreateInfo &createInfo) {
 	WNDCLASSEX windowClass{};
 	windowClass.cbSize = sizeof(WNDCLASSEX);
 	windowClass.style = CS_HREDRAW | CS_VREDRAW;

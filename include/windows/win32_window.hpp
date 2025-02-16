@@ -39,7 +39,7 @@ LRESULT CALLBACK Process(HWND hWind, UINT message, WPARAM wParam, LPARAM lParam)
 
 class win32_window {
 public:
-	struct win32_window_createInfo {
+	struct CreateInfo {
 		mdm::uvec2_s size = {800, 800};
 		mdm::ivec2_s position = {CW_USEDEFAULT, CW_USEDEFAULT};
 		std::string name = "Window";
@@ -50,10 +50,10 @@ public:
 	};
 
 	win32_window() {}
-	win32_window(const win32_window_createInfo &createInfo) { Create(createInfo); }
-	~win32_window() {}
+	win32_window(const CreateInfo &createInfo) { Create(createInfo); }
+	virtual ~win32_window() { Destroy(); }
 
-	virtual void Create(const win32_window_createInfo &createInfo);
+	void Create(const CreateInfo &createInfo);
 	virtual void Destroy();
 
 	LRESULT Process(UINT message, WPARAM wParam, LPARAM lParam);

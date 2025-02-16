@@ -1,23 +1,26 @@
 #include <iostream>
-#include <../include/vulkan/vk_context.hpp>
-#include <windows/win32_window.hpp>
 #include <limits>
+#include <OpenGL/OpenGL_window.hpp>
 
-int main() { 
-	mdge::win32_window window;
-	mdge::win32_window::win32_window_createInfo createInfo{};
-	createInfo.size = {800, 800};
-	createInfo.name = "Test window";
-	createInfo.style = WS_OVERLAPPEDWINDOW;
-	createInfo.color = {255, 255, 255};
-	window.Create(createInfo);
+int run() {
+	mdge::gl::OpenGL_Window window;
+	mdge::gl::OpenGL_Window::CreateInfo createInfo{};
+	createInfo.windowCreateInfo.size = {800, 800};
+	createInfo.windowCreateInfo.name = "Test window";
+	createInfo.windowCreateInfo.style = WS_OVERLAPPEDWINDOW;
+	createInfo.windowCreateInfo.color = {255, 255, 255};
+	window.Create(&createInfo);
+	window.MakeCurrent();
 
-	mdge::vk::Context::s_createInfo contextInfo{};
-	contextInfo.pWindow = &window;
-	mdge::vk::Context context;
-	context.Create(&contextInfo);
+	while (window.IsOpen()) { window.Update(); }
+	return 0;
+}
 
-	while (window.IsOpen()) { 
-		window.Update(); 
+int main() {
+	try {
+		return run();
+	} catch (const std::exception &e) {
+		MessageBox(nullptr, e.what(), "Error", MB_ICONERROR | MB_OK);
+		return -1;
 	}
 }
