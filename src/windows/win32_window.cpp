@@ -38,7 +38,10 @@ void mdge::win32_window::Create(const CreateInfo &createInfo) {
 
 	m_window = CreateWindowEx(0, className.c_str(), createInfo.name.c_str(), createInfo.style, createInfo.position.x(),
 							  createInfo.position.y(), size.w(), size.h(), 0, 0, GetModuleHandleA(0), this);
-	if (!m_window) { throw std::runtime_error("Failed to create window"); }
+	if (!m_window) {
+		throw std::runtime_error("Failed to create window");
+		//TODO: Error handling
+	}
 	ShowWindow(m_window, SW_SHOW);
 }
 
@@ -108,7 +111,7 @@ bool mdge::win32_window::HasFocus() const {
 	}
 }
 
-bool mdge::win32_window::Flash() const { 
+bool mdge::win32_window::Flash() const {
 	FLASHWINFO flashInfo{};
 	flashInfo.cbSize = sizeof(FLASHWINFO);
 	flashInfo.hwnd = m_window;

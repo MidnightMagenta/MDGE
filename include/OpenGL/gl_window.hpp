@@ -38,6 +38,11 @@ public:
 	void EnableVSync(bool enable);
 	bool MakeCurrent() const { return wglMakeCurrent(m_deviceContext, m_context); }
 
+	void Present() const { 
+		if (wglGetCurrentContext() != m_context) { MakeCurrent(); }
+		SwapBuffers(m_deviceContext); 
+	}
+
 private:
 	static bool LoadContextCreationProcedures();
 	static bool LoadExtraProcedures();

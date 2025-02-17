@@ -52,6 +52,8 @@ add_library("${ProjectName}" STATIC
 
     src/OpenGL/gl_window.cpp
     src/OpenGL/gl_program.cpp
+    src/OpenGL/gl_buffer.cpp
+    src/OpenGL/gl_vertex_buffer.cpp
 
     src/file.cpp
     #header files
@@ -64,6 +66,8 @@ add_library("${ProjectName}" STATIC
 
     include/OpenGL/gl_window.hpp
     include/OpenGL/gl_program.hpp
+    include/OpenGL/gl_buffer.hpp
+    include/OpenGL/gl_vertex_buffer.hpp
 
     include/file.hpp
 )

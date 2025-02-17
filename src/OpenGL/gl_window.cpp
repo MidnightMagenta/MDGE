@@ -12,7 +12,10 @@ void mdge::gl::OpenGL_Window::Create(const CreateInfo *pCreateInfo) {
 	RegisterClassEx(&wc);
 
 	HWND dummyWindow = CreateWindowEx(0, "DUMMY_WINDOW", "DUMMY_WINDOW", 0, 0, 0, 0, 0, 0, 0, GetModuleHandleA(0), 0);
-	if (!dummyWindow) { throw std::runtime_error("Failed to create OpenGL context.\nFailed to create dummy window"); }
+	if (!dummyWindow) {
+		throw std::runtime_error("Failed to create OpenGL context.\nFailed to create dummy window");
+		//TODO: Error handling
+	}
 	HDC dummyDevice = GetDC(dummyWindow);
 	PIXELFORMATDESCRIPTOR pfd{};
 	pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
@@ -28,13 +31,16 @@ void mdge::gl::OpenGL_Window::Create(const CreateInfo *pCreateInfo) {
 	HGLRC dummyContext = wglCreateContext(dummyDevice);
 	if (!dummyContext) {
 		throw std::runtime_error("Failed to create OpenGL context.\nFailed to create dummy context.");
+		//TODO: Error handling
 	}
 	if (!wglMakeCurrent(dummyDevice, dummyContext)) {
 		throw std::runtime_error("Failed to create OpenGL context.\nFailed to make dummy context current.");
+		//TODO: Error handling
 	}
 
 	if (!LoadContextCreationProcedures()) {
 		throw std::runtime_error("Failed to create OpenGL context.\nFailed to load context creation procedures.");
+		//TODO: Error handling
 	}
 
 	const int contextAttribs[] = {WGL_CONTEXT_MAJOR_VERSION_ARB, pCreateInfo->OpenGL_major,
@@ -71,11 +77,15 @@ void mdge::gl::OpenGL_Window::Create(const CreateInfo *pCreateInfo) {
 
 	if (!proc::wglChoosePixelFormatARB(m_deviceContext, pixelFormatAttribs, nullptr, 1, &msPixelFormat, &formatCount)) {
 		throw std::runtime_error("Failed to create OpenGL context.\nFailed to choose pixel format.");
+		//TODO: Error handling
 	}
 
 	SetPixelFormat(m_deviceContext, msPixelFormat, &pfd);
 	m_context = proc::wglCreateContextAttribsARB(m_deviceContext, nullptr, contextAttribs);
-	if (!m_context) { throw std::runtime_error("Failed to create OpenGL context."); }
+	if (!m_context) {
+		throw std::runtime_error("Failed to create OpenGL context.");
+		//TODO: Error handling
+	}
 
 	wglMakeCurrent(dummyDevice, nullptr);
 	wglDeleteContext(dummyContext);
@@ -84,9 +94,11 @@ void mdge::gl::OpenGL_Window::Create(const CreateInfo *pCreateInfo) {
 
 	if (!wglMakeCurrent(m_deviceContext, m_context)) {
 		throw std::runtime_error("Failed to create OpenGL context.\nFailed to make context current.");
+		//TODO: Error handling
 	}
-	if (!gladLoadGL()) {
-		throw std::runtime_error("Failed to create OpenGL context.\nFailed to load procedures.");
+	if (!gladLoadGL()) { 
+		throw std::runtime_error("Failed to create OpenGL context.\nFailed to load procedures."); 
+		//TODO: Error handling
 	}
 
 	LoadExtraProcedures();
@@ -109,7 +121,7 @@ bool mdge::gl::OpenGL_Window::LoadContextCreationProcedures() {
 	return true;
 }
 
-bool mdge::gl::OpenGL_Window::LoadExtraProcedures() { 
+bool mdge::gl::OpenGL_Window::LoadExtraProcedures() {
 	proc::wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC) wglGetProcAddress("wglSwapIntervalEXT");
 	if (!proc::wglSwapIntervalEXT) { return false; }
 	return true;

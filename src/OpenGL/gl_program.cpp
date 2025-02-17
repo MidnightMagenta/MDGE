@@ -17,6 +17,7 @@ void mdge::gl::Shader::Create(std::string shaderPath, GLenum shaderUsage) {
 		glGetShaderInfoLog(m_shader, 1024, &logLength, message);
 		std::string error(message);
 		throw std::runtime_error(error);
+		//TODO: Error handling
 	}
 }
 
@@ -39,6 +40,7 @@ void mdge::gl::Program::Create(const CreateInfo *pCreateInfo) {
 		glGetProgramInfoLog(m_program, 1024, &logLength, message);
 		std::string error(message);
 		throw std::runtime_error(error);
+		//TODO: Error handling
 	}
 
 	for (auto &shader : shaders) { shader.Delete(); }
