@@ -15,15 +15,20 @@ public:
 	void Create(GLenum target, GLsizeiptr size, const void *pData, GLenum usage);
 	void Destroy();
 
+	void Resize(GLsizeiptr size);
 	void RecreateBuffer(GLenum target, GLsizeiptr size, const void *pData);
 	void RecreateBuffer(GLenum target, GLsizeiptr size, const void *pData, GLenum usage);
 	void RewriteBuffer(GLsizeiptr size, const void *pData);
 
-	void WriteData(GLsizeiptr size, const void *pData) const;
-	void WriteDataAtLocation(GLsizeiptr size, GLintptr offset, const void *pData) const;
-	
-	void Bind() const { glBindBuffer(m_target, m_buffer); }
-	void Unbind() const { glBindBuffer(m_target, GL_NULL_HANDLE); }
+	void Overwrite(GLsizeiptr size, const void *pData) const;
+	void Overwrite(GLsizeiptr size, GLintptr offset, const void *pData) const;
+
+	void Bind() const;
+	inline void Unbind() const { glBindBuffer(m_target, GL_NULL_HANDLE); }
+
+	inline void GetData(GLsizeiptr size, void *pData) const { glGetBufferSubData(m_target, 0, size, pData); }
+
+	static GLuint GetBoundBuffer(GLenum target);
 
 protected:
 	GLenum m_target;
