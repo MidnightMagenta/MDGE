@@ -3,6 +3,7 @@
 
 #include "../include/file.hpp"
 #include <../dependencies/OpenGL/include/OpenGL.hpp>
+#include <map>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,10 +27,13 @@ private:
 	GLuint m_shader = GL_NULL_HANDLE;
 };
 
+enum class UniformVariableType { MDGE_GL_UNIFORM_VARIABLE, MDGE_GL_UNIFORM_BLOCK };
+
 class Program {
 public:
 	struct CreateInfo {
 		std::vector<std::pair<std::string, GLenum>> shaderInfos;
+		std::vector<std::pair<std::string, UniformVariableType>> uniformVariables;
 	};
 
 	Program() {}
@@ -40,6 +44,8 @@ public:
 		if (m_program) { glDeleteProgram(m_program); }
 		m_program = GL_NULL_HANDLE;
 	}
+
+	std::map<std::string, std::pair<GLint, UniformVariableType>> m_uniforms;
 
 protected:
 	GLuint m_program = GL_NULL_HANDLE;

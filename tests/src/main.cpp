@@ -1,7 +1,8 @@
-#include <OpenGL/gl_program.hpp>
-#include <OpenGL/gl_window.hpp>
 #include <iostream>
 #include <limits>
+#include <OpenGL/gl_program.hpp>
+#include <OpenGL/gl_window.hpp>
+#include <windows/win32_console.hpp>
 
 int run() {
 	mdge::gl::OpenGL_Window window;
@@ -13,12 +14,12 @@ int run() {
 	window.Create(&createInfo);
 	window.MakeCurrent();
 
-	mdge::gl::Shader testShader;
-	testShader.Create("../resources/shaders/sample_shader.frag", GL_FRAGMENT_SHADER);
-
 	mdge::gl::Program::CreateInfo programCreateInfo{};
 	programCreateInfo.shaderInfos = {{"../resources/shaders/sample_shader.frag", GL_FRAGMENT_SHADER},
 									 {"../resources/shaders/sample_shader.vert", GL_VERTEX_SHADER}};
+	programCreateInfo.uniformVariables = {{"uniformVar", mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_VARIABLE},
+										  {"uniformVar2", mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_VARIABLE},
+										  {"uniformBlock", mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_BLOCK}};
 
 	mdge::gl::Program program;
 	program.Create(&programCreateInfo);
@@ -31,7 +32,9 @@ int main() {
 	try {
 		return run();
 	} catch (const std::exception &e) {
-		std::cerr << e.what() << "\n";
+		mdge::setConsoleColor(CONSOLE_RED);
+		std::cerr << "Application error: " << e.what() << "\n";
+		mdge::setConsoleColor(CONSOLE_WHITE);
 		return -1;
 	}
 }

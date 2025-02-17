@@ -10,10 +10,11 @@
 #define CONSOLE_YELLOW 14
 #define CONSOLE_WHITE 7
 
+namespace mdge {
 inline void setConsoleColor(int color) {
 	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, color);
 }
-
+}// namespace mdge
 
 #endif// CONSOLE_H

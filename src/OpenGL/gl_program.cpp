@@ -42,4 +42,28 @@ void mdge::gl::Program::Create(const CreateInfo *pCreateInfo) {
 	}
 
 	for (auto &shader : shaders) { shader.Delete(); }
+
+	for (const auto &uniformVariable : pCreateInfo->uniformVariables) {
+		GLint uniformIndex = GL_NULL_HANDLE;
+		switch (uniformVariable.second) {
+			case mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_VARIABLE:
+				uniformIndex = glGetUniformLocation(m_program, uniformVariable.first.c_str());
+				if (uniformIndex >= 0) {
+					m_uniforms.insert(std::make_pair(
+							uniformVariable.first,
+							std::make_pair(uniformIndex, mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_VARIABLE)));
+				}
+				break;
+			case mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_BLOCK:
+				uniformIndex = glGetUniformBlockIndex(m_program, uniformVariable.first.c_str());
+				if (uniformIndex >= 0) {
+					m_uniforms.insert(std::make_pair(
+							uniformVariable.first,
+							std::make_pair(uniformIndex, mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_BLOCK)));
+				}
+				break;
+			default:
+				break;
+		}
+	}
 }

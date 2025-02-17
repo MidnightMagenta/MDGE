@@ -28,13 +28,11 @@ add_custom_target(compile_shaders ALL
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/shaders"
 )
 
-if(GraphicsAPI STREQUAL "Vulkan")
-    set(ShaderDirectory ${PROJECT_SOURCE_DIR}/shaders/shader_bin)
-elseif(GraphicsAPI STREQUAL "OpenGL")
-    set(ShaderDirectory ${PROJECT_SOURCE_DIR}/shaders/gl_shaders)
-endif()
+set(ShaderBinaryDirectory ${PROJECT_SOURCE_DIR}/shaders/shader_bin)
+set(ShaderDirectory ${PROJECT_SOURCE_DIR}/shaders/gl_shaders)
 
 add_custom_target(copy_shaders ALL
+    COMMENT "Copying shaders"
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${ShaderDirectory} ${CMAKE_BINARY_DIR}/resources/shaders
 )
 
@@ -70,10 +68,7 @@ add_library("${ProjectName}" STATIC
     include/file.hpp
 )
 
-if(GraphicsAPI STREQUAL "Vulkan")
-    add_dependencies("${ProjectName}" compile_shaders)
-endif()
-
+add_dependencies("${ProjectName}" compile_shaders)
 add_dependencies("${ProjectName}" copy_shaders q_start_clock)
 
 target_compile_definitions("${ProjectName}" PUBLIC VERSION_MAJOR=${VersionMajor})
