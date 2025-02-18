@@ -113,6 +113,20 @@ void mdge::gl::OpenGL_Window::EnableVSync(bool enable) {
 	}
 }
 
+LRESULT mdge::gl::OpenGL_Window::Process(UINT message, WPARAM wParam, LPARAM lParam) { 
+	switch (message) {
+		case WM_SIZE:
+			if (glViewport != nullptr) { 
+				mdm::uvec2_s size = GetClientSize();
+				glViewport(0, 0, size.w(), size.h()); 
+			}
+			break;
+		default:
+			break;
+	}
+	return DefWindowProc(m_window, message, wParam, lParam);
+}
+
 bool mdge::gl::OpenGL_Window::LoadContextCreationProcedures() {
 	proc::wglCreateContextAttribsARB =
 			(PFNWGLCREATECONTEXTATTRIBSARBPROC) wglGetProcAddress("wglCreateContextAttribsARB");

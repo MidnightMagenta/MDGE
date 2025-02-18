@@ -29,6 +29,7 @@ public:
 	inline void GetData(GLsizeiptr size, void *pData) const { glGetBufferSubData(m_target, 0, size, pData); }
 
 	static GLuint GetBoundBuffer(GLenum target);
+	static GLsizeiptr ElementSize(GLenum type);
 
 protected:
 	GLenum m_target;

@@ -56,8 +56,6 @@ public:
 	void Create(const CreateInfo &createInfo);
 	virtual void Destroy();
 
-	LRESULT Process(UINT message, WPARAM wParam, LPARAM lParam);
-
 	HWND GetNativeWindowHandle() const { return m_window; }
 
 	void Update() const;
@@ -66,6 +64,7 @@ public:
 	bool IsOpen() const { return IsWindow(m_window); }
 
 	mdm::uvec2_s GetSize() const;
+	mdm::uvec2_s GetClientSize() const;
 	virtual void SetSize(const mdm::uvec2_s &position) const;
 
 	mdm::uvec2_s GetPosition() const;
@@ -83,6 +82,8 @@ public:
 	bool IsMinimized() const { return IsIconic(m_window); }
 
 	bool Flash() const;
+
+	virtual LRESULT Process(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
 	mdm::uvec2_s GetWindowAdjustedSize(const mdm::uvec2_s &size, DWORD style);

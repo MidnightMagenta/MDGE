@@ -75,6 +75,14 @@ mdm::uvec2_s mdge::win32_window::GetSize() const {
 	return {0, 0};
 }
 
+mdm::uvec2_s mdge::win32_window::GetClientSize() const {
+	RECT windowSize;
+	if (GetClientRect(m_window, &windowSize)) {
+		return {unsigned int(windowSize.right - windowSize.left), unsigned int(windowSize.bottom - windowSize.top)};
+	}
+	return {0, 0};
+}
+
 void mdge::win32_window::SetSize(const mdm::uvec2_s &size) const {
 	SetWindowPos(m_window, HWND_TOP, 0, 0, size.w(), size.h(), SWP_NOMOVE | SWP_NOREPOSITION | SWP_NOACTIVATE);
 }

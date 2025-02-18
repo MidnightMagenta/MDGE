@@ -45,6 +45,9 @@ public:
 		m_program = GL_NULL_HANDLE;
 	}
 
+	void Bind() const { glUseProgram(m_program); }
+	void Unbind() const { glUseProgram(0); }
+
 	std::map<std::string, std::pair<GLint, UniformVariableType>> m_uniforms;
 
 protected:

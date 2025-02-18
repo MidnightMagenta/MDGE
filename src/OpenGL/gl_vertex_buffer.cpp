@@ -12,8 +12,8 @@ void mdge::gl::VertexBuffer::Create(const CreateInfo &createInfo) {
 			throw std::runtime_error("Invalid vertex attribute locations");
 		}
 		m_attribLocations.insert(attribute.location);
-		glVertexAttribPointer(attribute.location, attribute.valueCount, attribute.dataType, GL_FALSE, createInfo.vertexSize,
-							  (void *) attribute.offset);
+		glVertexAttribPointer(attribute.location, attribute.valueCount, attribute.dataType, GL_FALSE,
+							  createInfo.vertexSize, (void *) attribute.offset);
 	}
 
 	Enable();
@@ -25,14 +25,16 @@ void mdge::gl::VertexBuffer::Destroy() {
 	glDeleteVertexArrays(1, &m_array);
 }
 
-void mdge::gl::VertexBuffer::Bind() { 
+void mdge::gl::VertexBuffer::Bind() {
 	m_buffer.Bind();
-	glBindVertexArray(m_array); 
+	GLint id;
+	glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &id);
+	if (m_array != (GLuint) id) { glBindVertexArray(m_array); }
 }
 
-void mdge::gl::VertexBuffer::Unbind() { 
+void mdge::gl::VertexBuffer::Unbind() {
 	m_buffer.Unbind();
-	glBindVertexArray(GL_NULL_HANDLE); 
+	glBindVertexArray(GL_NULL_HANDLE);
 }
 
 void mdge::gl::VertexBuffer::Enable() {

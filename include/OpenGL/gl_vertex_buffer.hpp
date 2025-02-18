@@ -18,9 +18,9 @@ struct VertexAttribute {
 class VertexBuffer {
 public:
 	struct CreateInfo {
-		const std::vector<VertexAttribute> &attributes;
-		size_t vertexSize;
-		size_t arraySize;
+		std::vector<VertexAttribute> attributes;
+		size_t vertexSize = 0;
+		size_t arraySize = 0;
 		const void *data = nullptr;
 		GLenum usage = GL_STATIC_DRAW;
 	};

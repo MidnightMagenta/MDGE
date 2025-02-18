@@ -3,6 +3,13 @@
 #include <OpenGL/gl_program.hpp>
 #include <OpenGL/gl_window.hpp>
 #include <windows/win32_console.hpp>
+#include <OpenGL/gl_vertex_buffer.hpp>
+
+std::vector<float> triangleVertices = {
+		0.0f,  0.5f,  0.0f,
+		-0.5f, -0.5f, 0.0f,
+		0.5f,  -0.5f, 0.0f
+};
 
 int run() {
 	mdge::gl::OpenGL_Window window;
@@ -17,14 +24,29 @@ int run() {
 	mdge::gl::Program::CreateInfo programCreateInfo{};
 	programCreateInfo.shaderInfos = {{"../resources/shaders/sample_shader.frag", GL_FRAGMENT_SHADER},
 									 {"../resources/shaders/sample_shader.vert", GL_VERTEX_SHADER}};
-	programCreateInfo.uniformVariables = {{"uniformVar", mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_VARIABLE},
-										  {"uniformVar2", mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_VARIABLE},
-										  {"uniformBlock", mdge::gl::UniformVariableType::MDGE_GL_UNIFORM_BLOCK}};
 
 	mdge::gl::Program program;
 	program.Create(&programCreateInfo);
 
-	while (window.IsOpen()) { window.Update(); }
+	mdge::gl::VertexBuffer buffer;
+	mdge::gl::VertexBuffer::CreateInfo bufferCreateInfo{};
+	bufferCreateInfo.arraySize = 9 * sizeof(float);
+	bufferCreateInfo.vertexSize = 3 * sizeof(float);
+	bufferCreateInfo.attributes = {{0, 3, GL_FLOAT, 0}};
+	bufferCreateInfo.data = triangleVertices.data();
+	buffer.Create(bufferCreateInfo);
+
+	window.SetClearColor({255, 0, 128});
+	window.EnableVSync(false);
+
+	while (window.IsOpen()) { 
+		window.Update(); 
+		window.ClearColorBuffer();
+		program.Bind();
+		buffer.Bind();
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		window.Present();
+	}
 	return 0;
 }
 
