@@ -34,7 +34,7 @@ void mdge::win32_window::Create(const CreateInfo &createInfo) {
 	windowClass.hIconSm = nullptr;
 	RegisterClassEx(&windowClass);
 
-	mdm::uvec2_s size = GetWindowAdjustedSize(createInfo.size, createInfo.style);
+	mdm::uvec2_s size = GetWindowAdjustedSize(createInfo.size, createInfo.style, createInfo.style & WS_SYSMENU);
 
 	m_window = CreateWindowEx(0, className.c_str(), createInfo.name.c_str(), createInfo.style, createInfo.position.x(),
 							  createInfo.position.y(), size.w(), size.h(), 0, 0, GetModuleHandleA(0), this);
@@ -127,13 +127,13 @@ bool mdge::win32_window::Flash() const {
 	return FlashWindowEx(&flashInfo);
 }
 
-mdm::uvec2_s mdge::win32_window::GetWindowAdjustedSize(const mdm::uvec2_s &size, DWORD style) {
+mdm::uvec2_s mdge::win32_window::GetWindowAdjustedSize(const mdm::uvec2_s &size, DWORD style, bool hasMenuBar) {
 	RECT rect{};
 	rect.left = 0;
 	rect.right = size.w();
 	rect.top = 0;
 	rect.bottom = size.h();
-	if (AdjustWindowRect(&rect, style, false)) {
+	if (AdjustWindowRect(&rect, style, hasMenuBar)) {
 		return {unsigned int(rect.right - rect.left), unsigned int(rect.bottom - rect.top)};
 	}
 	return size;

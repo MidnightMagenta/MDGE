@@ -20,8 +20,6 @@ if (NOT DEFINED ENV{VULKAN_SDK})
     message(FATAL_ERROR "VULKAN_SDK is not set.")
 endif()
 
-add_subdirectory("${CMAKE_SOURCE_DIR}/dependencies/vma")
-
 add_custom_target(compile_shaders ALL
     COMMENT "Compiling shaders"
     COMMAND "${PROJECT_SOURCE_DIR}/shaders/compile.bat"
@@ -41,6 +39,8 @@ add_custom_target(q_start_clock ALL
     COMMAND "${PROJECT_SOURCE_DIR}/console_clock/bin/run.bat"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/console_clock/bin"
 )
+
+add_subdirectory("${CMAKE_SOURCE_DIR}/dependencies")
 
 add_library("${ProjectName}" STATIC
     #src files
@@ -86,8 +86,6 @@ elseif (Subsystem STREQUAL "MDGE_SUBSYSTEM_WINDOWS")
     set_target_properties("${ProjectName}" PROPERTIES LINK_FLAGS /SUBSYSTEM:WINDOWS)
     target_compile_definitions("${ProjectName}" PRIVATE MDGE_SUBSYSTEM_WINDOWS)
 endif ()
-
-add_subdirectory("${CMAKE_SOURCE_DIR}/dependencies/OpenGL")
 
 target_include_directories("${ProjectName}" PUBLIC 
     "${CMAKE_SOURCE_DIR}/dependencies" 

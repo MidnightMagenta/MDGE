@@ -43,7 +43,7 @@ public:
 		mdm::uvec2_s size = {800, 800};
 		mdm::ivec2_s position = {CW_USEDEFAULT, CW_USEDEFAULT};
 		std::string name = "Window";
-		DWORD style = WS_OVERLAPPEDWINDOW;
+		DWORD style;
 		mdm::rgb_24 color = {255, 255, 255};
 		HICON icon = nullptr;
 		WNDPROC fpWindowProcess = nullptr;
@@ -86,7 +86,7 @@ public:
 	virtual LRESULT Process(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
-	mdm::uvec2_s GetWindowAdjustedSize(const mdm::uvec2_s &size, DWORD style);
+	mdm::uvec2_s GetWindowAdjustedSize(const mdm::uvec2_s &size, DWORD style, bool hasMenuBar);
 
 	HWND m_window = nullptr;
 };

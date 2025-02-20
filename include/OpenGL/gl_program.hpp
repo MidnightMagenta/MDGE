@@ -16,10 +16,7 @@ public:
 	~Shader() { Delete(); }
 
 	void Create(std::string shaderPath, GLenum shaderUsage);
-	void Delete() {
-		if (m_shader != GL_NULL_HANDLE) { glDeleteShader(m_shader); }
-		m_shader = GL_NULL_HANDLE;
-	}
+	void Delete() { glDeleteShader(m_shader); }
 
 	GLuint Handle() const { return m_shader; }
 
@@ -40,10 +37,7 @@ public:
 	~Program() { Delete(); }
 
 	void Create(const CreateInfo *pCreateInfo);
-	void Delete() {
-		if (m_program) { glDeleteProgram(m_program); }
-		m_program = GL_NULL_HANDLE;
-	}
+	void Delete() { glDeleteProgram(m_program); }
 
 	void Bind() const { glUseProgram(m_program); }
 	void Unbind() const { glUseProgram(0); }
