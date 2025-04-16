@@ -20,7 +20,10 @@ void mdge::gl::Buffer::Create(GLenum target, GLsizeiptr size, const void *pData,
 	glBufferData(target, size, pData, usage);
 }
 
-void mdge::gl::Buffer::Destroy() { glDeleteBuffers(1, &m_buffer); }
+void mdge::gl::Buffer::Destroy() { 
+	glDeleteBuffers(1, &m_buffer); 
+	m_buffer = GL_NULL_HANDLE;
+}
 
 void mdge::gl::Buffer::Resize(GLsizeiptr size) {
 	void *data = new char[m_size];

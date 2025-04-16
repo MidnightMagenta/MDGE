@@ -12,6 +12,7 @@ set(VersionPatch 0)
 
 project("${ProjectName}" VERSION 0.1)
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_BUILD_PARALLEL_LEVEL 4)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
 find_package(OpenGL REQUIRED)
@@ -56,6 +57,7 @@ add_library("${ProjectName}" STATIC
     src/OpenGL/gl_vertex_buffer.cpp
 
     src/file.cpp
+    
     #header files
     include/windows/win32_window.hpp
     include/windows/win32_cursor.hpp
@@ -70,6 +72,7 @@ add_library("${ProjectName}" STATIC
     include/OpenGL/gl_vertex_buffer.hpp
 
     include/file.hpp
+    include/object.hpp
 )
 
 add_dependencies("${ProjectName}" compile_shaders)

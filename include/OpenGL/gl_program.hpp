@@ -16,7 +16,10 @@ public:
 	~Shader() { Delete(); }
 
 	void Create(std::string shaderPath, GLenum shaderUsage);
-	void Delete() { glDeleteShader(m_shader); }
+	void Delete() {
+		glDeleteShader(m_shader);
+		m_shader = GL_NULL_HANDLE;
+	}
 
 	GLuint Handle() const { return m_shader; }
 
@@ -37,9 +40,16 @@ public:
 	~Program() { Delete(); }
 
 	void Create(const CreateInfo *pCreateInfo);
-	void Delete() { glDeleteProgram(m_program); }
+	void Delete() {
+		glDeleteProgram(m_program);
+		m_program = GL_NULL_HANDLE;
+	}
 
-	void Bind() const { glUseProgram(m_program); }
+	void Bind() const {
+		GLint id = 0;
+		glGetIntegerv(GL_CURRENT_PROGRAM, &id);
+		if (m_program != GLuint(id)) { glUseProgram(m_program); }
+	}
 	void Unbind() const { glUseProgram(0); }
 
 	std::map<std::string, std::pair<GLint, UniformVariableType>> m_uniforms;
