@@ -23,9 +23,8 @@ int main() {
 	go->Update();
 	delete go;
 
-	std::ifstream jf("C:/Users/borbg/Documents/Projects/MDGE/3d_objects/cube.glb", std::ios::ate);
-	mdge::glb::Loader loader;
-	loader.Load(jf);
+	mdge::gltf::Loader loader;
+	loader.Load("C:/Users/borbg/Documents/Projects/MDGE/3d_objects/cube.glb");
 
 	return 0;
 }
