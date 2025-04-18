@@ -1,5 +1,5 @@
-#ifndef MDGE_TRANSFORM_H
-#define MDGE_TRANSFORM_H
+#ifndef MDGE_TRANSFORM_COMPONENT_H
+#define MDGE_TRANSFORM_COMPONENT_H
 
 #include "../include/object.hpp"
 #include <MidnightMath/include/md_math.hpp>
@@ -35,4 +35,4 @@ private:
 };
 }// namespace mdge
 
-#endif// !MDGE_TRANSFORM_H
+#endif// !MDGE_TRANSFORM_COMPONENT_H

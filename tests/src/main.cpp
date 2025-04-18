@@ -2,6 +2,11 @@
 #include <object.hpp>
 #include <transform.hpp>
 
+#include <fstream>
+#include <nlohmann/json.hpp>
+#include <file.hpp>
+#include <glb_loader.hpp>
+
 class TestObj : public mdge::Object {
 public:
 	void Update() override {
@@ -17,4 +22,10 @@ int main() {
 	go->GetComponent<mdge::Transform>()->Position() = MDGE_TRANSFORM_UP;
 	go->Update();
 	delete go;
+
+	std::ifstream jf("C:/Users/borbg/Documents/Projects/MDGE/3d_objects/cube.glb", std::ios::ate);
+	mdge::glb::Loader loader;
+	loader.Load(jf);
+
+	return 0;
 }

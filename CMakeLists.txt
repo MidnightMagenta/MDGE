@@ -57,6 +57,8 @@ add_library("${ProjectName}" STATIC
     src/OpenGL/gl_vertex_buffer.cpp
 
     src/file.cpp
+    src/mesh.cpp
+    src/glb_loader.cpp
     
     #header files
     include/windows/win32_window.hpp
@@ -73,6 +75,8 @@ add_library("${ProjectName}" STATIC
 
     include/file.hpp
     include/object.hpp
+    include/mesh.hpp
+    include/glb_loader.hpp
 )
 
 add_dependencies("${ProjectName}" compile_shaders)
@@ -81,6 +85,7 @@ add_dependencies("${ProjectName}" copy_shaders q_start_clock)
 target_compile_definitions("${ProjectName}" PUBLIC VERSION_MAJOR=${VersionMajor})
 target_compile_definitions("${ProjectName}" PUBLIC VERSION_MINOR=${VersionMinor})
 target_compile_definitions("${ProjectName}" PUBLIC VERSION_PATCH=${VersionPatch})
+target_compile_definitions("${ProjectName}" PUBLIC MDGE_USE_VULKAN=0)
 
 if(Subsystem STREQUAL "MDGE_SUBSYSTEM_CONSOLE")
     set_target_properties("${ProjectName}" PROPERTIES LINK_FLAGS /SUBSYSTEM:CONSOLE)
@@ -100,6 +105,7 @@ target_link_libraries("${ProjectName}" PUBLIC
     "vma"
     OpenGL::GL
     GL_Dependencies
+    nlohmann_json::nlohmann_json
 )
 
 add_subdirectory(tests)
