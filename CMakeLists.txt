@@ -58,7 +58,6 @@ add_library("${ProjectName}" STATIC
 
     src/file.cpp
     src/mesh.cpp
-    src/glb_loader.cpp
     
     #header files
     include/windows/win32_window.hpp
@@ -76,7 +75,7 @@ add_library("${ProjectName}" STATIC
     include/file.hpp
     include/object.hpp
     include/mesh.hpp
-    include/glb_loader.hpp
+    include/md_geometry.hpp
 )
 
 add_dependencies("${ProjectName}" compile_shaders)
@@ -105,7 +104,7 @@ target_link_libraries("${ProjectName}" PUBLIC
     "vma"
     OpenGL::GL
     GL_Dependencies
-    nlohmann_json::nlohmann_json
+    assimp
 )
 
 add_subdirectory(tests)

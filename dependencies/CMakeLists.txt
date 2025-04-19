@@ -1,3 +1,4 @@
 add_subdirectory(OpenGL)
 add_subdirectory(vma)
-add_subdirectory(nlohmann_json)
+set(BUILD_SHARED_LIBS OFF)
+add_subdirectory("assimp")

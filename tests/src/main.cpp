@@ -1,11 +1,12 @@
 #include <iostream>
 #include <object.hpp>
 #include <transform.hpp>
-
+#include <md_geometry.hpp>
+#include <vector>
 #include <fstream>
-#include <nlohmann/json.hpp>
-#include <file.hpp>
-#include <glb_loader.hpp>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 class TestObj : public mdge::Object {
 public:
@@ -23,8 +24,18 @@ int main() {
 	go->Update();
 	delete go;
 
-	mdge::gltf::Loader loader;
-	loader.Load("C:/Users/borbg/Documents/Projects/MDGE/3d_objects/cube.glb");
+	Assimp::Importer imp;
+	const aiScene *scene =
+			imp.ReadFile("C:/Users/borbg/Documents/Projects/MDGE/3d_objects/cube.obj", aiProcess_Triangulate);
+	if (!scene) {
+		std::cerr << "Failed to load file\n";
+		return -1;
+	}
+
+	for (int i = 0; i < scene->mMeshes[0]->mNumVertices; i++) {
+		std::cout << scene->mMeshes[0]->mVertices[i].x << "\t" << scene->mMeshes[0]->mVertices[i].y << "\t"
+				  << scene->mMeshes[0]->mVertices[i].z << "\n";
+	}
 
 	return 0;
 }
